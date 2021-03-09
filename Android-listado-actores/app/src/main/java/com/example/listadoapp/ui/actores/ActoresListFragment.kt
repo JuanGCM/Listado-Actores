@@ -39,7 +39,6 @@ class ActoresListFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = MyActoresListRecyclerViewAdapter(DummyContent.ITEMS)
             }
         }
         return view

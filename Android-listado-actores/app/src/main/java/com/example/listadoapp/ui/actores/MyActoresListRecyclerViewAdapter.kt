@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.example.listadoapp.R
+import com.example.listadoapp.ui.Actor
 
 import com.example.listadoapp.ui.actores.dummy.DummyContent.DummyItem
 
@@ -14,7 +15,7 @@ import com.example.listadoapp.ui.actores.dummy.DummyContent.DummyItem
  * TODO: Replace the implementation with code for your data type.
  */
 class MyActoresListRecyclerViewAdapter(
-    private val values: List<DummyItem>
+    private val values: List<Actor>
 ) : RecyclerView.Adapter<MyActoresListRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -25,18 +26,15 @@ class MyActoresListRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
-        holder.idView.text = item.id
-        holder.contentView.text = item.content
+        holder.nombre.text = item.name
+        holder.popularidad.text = item.popularity.toString()
     }
 
     override fun getItemCount(): Int = values.size
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val idView: TextView = view.findViewById(R.id.nombre)
-        val contentView: TextView = view.findViewById(R.id.popu)
+        val nombre: TextView = view.findViewById(R.id.nombre)
+        val popularidad: TextView = view.findViewById(R.id.popu)
 
-        override fun toString(): String {
-            return super.toString() + " '" + contentView.text + "'"
-        }
     }
 }
