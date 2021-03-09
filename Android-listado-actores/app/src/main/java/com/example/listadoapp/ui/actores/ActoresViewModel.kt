@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.listadoapp.ui.Actor
 import com.example.listadoapp.ui.ActorService
+import com.example.listadoapp.ui.ActoresResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,18 +34,18 @@ class ActoresViewModel :ViewModel(){
     }
 
     fun getActoresList() {
-        service.getActores("f275c22f59e80ed081f9dd89c51370ae").enqueue(object: Callback<List<Actor>> {
+        service.getActores("f275c22f59e80ed081f9dd89c51370ae","en-US",1).enqueue(object: Callback<ActoresResponse> {
             override fun onResponse(
-                call: Call<List<Actor>>,
-                response: Response<List<Actor>>
+                call: Call<ActoresResponse>,
+                response: Response<ActoresResponse>
             ) {
                 if(response.code() == 200) {
                     Log.i("ERROR","Hace la petición")
-                    _actores.value = response.body()
+                    _actores.value = response.body()?.results
                 }
             }
 
-            override fun onFailure(call: Call<List<Actor>>, t: Throwable) {
+            override fun onFailure(call: Call<ActoresResponse>, t: Throwable) {
                 // Entra cuando falla la comunicación con el servidor
                 Log.i("ERROR",t.message.toString()+" "+t.cause.toString())
             }

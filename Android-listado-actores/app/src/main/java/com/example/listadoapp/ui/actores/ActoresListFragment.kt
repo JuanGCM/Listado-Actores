@@ -8,7 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.listadoapp.R
+import com.example.listadoapp.ui.Actor
 import com.example.listadoapp.ui.actores.dummy.DummyContent
 
 /**
@@ -16,46 +19,35 @@ import com.example.listadoapp.ui.actores.dummy.DummyContent
  */
 class ActoresListFragment : Fragment() {
 
-    private var columnCount = 1
+    private lateinit var actoresViewModel: ActoresViewModel
+    var listaActores: List<Actor> = listOf()
+    lateinit var listaAdapter: MyActoresListRecyclerViewAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        arguments?.let {
-            columnCount = it.getInt(ARG_COLUMN_COUNT)
-        }
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_actores_list, container, false)
 
-        // Set the adapter
-        if (view is RecyclerView) {
-            with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
-            }
-        }
+        actoresViewModel =
+            ViewModelProvider(this).get(ActoresViewModel::class.java)
+
+        val v = view as RecyclerView
+
+        listaAdapter = MyActoresListRecyclerViewAdapter(listaActores)
+        v.layoutManager = LinearLayoutManager(context)
+        v.adapter= listaAdapter
+
+        actoresViewModel.actores.observe(viewLifecycleOwner, Observer {
+                actores -> listaActores = actores
+            listaAdapter.setData(actores.sortedWith(compareBy({ it.name })))
+        })
+
         return view
-    }
-
-    companion object {
-
-        // TODO: Customize parameter argument names
-        const val ARG_COLUMN_COUNT = "column-count"
-
-        // TODO: Customize parameter initialization
-        @JvmStatic
-        fun newInstance(columnCount: Int) =
-            ActoresListFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_COLUMN_COUNT, columnCount)
-                }
-            }
     }
 }

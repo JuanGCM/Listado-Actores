@@ -15,7 +15,7 @@ import com.example.listadoapp.ui.actores.dummy.DummyContent.DummyItem
  * TODO: Replace the implementation with code for your data type.
  */
 class MyActoresListRecyclerViewAdapter(
-    private val values: List<Actor>
+    private var values: List<Actor>
 ) : RecyclerView.Adapter<MyActoresListRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -36,5 +36,11 @@ class MyActoresListRecyclerViewAdapter(
         val nombre: TextView = view.findViewById(R.id.nombre)
         val popularidad: TextView = view.findViewById(R.id.popu)
 
+    }
+
+    fun setData(newActor: List<Actor>) {
+        this.values = newActor
+
+        notifyDataSetChanged()
     }
 }

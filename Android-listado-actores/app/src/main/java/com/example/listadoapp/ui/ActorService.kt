@@ -4,9 +4,15 @@ import retrofit2.http.GET
 import retrofit2.Call
 import retrofit2.http.Header
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ActorService {
 
-    @GET("person/popular?api_key={key}")
-    fun getActores( @Path("key") key:String): Call<List<Actor>>
+
+
+    @GET("person/popular")
+    fun getActores( @Query("api_key")api_key:String,
+                    @Query("language")language:String,
+                    @Query("page")page:Int): Call<ActoresResponse>
+
 }
